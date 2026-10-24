@@ -1,0 +1,49 @@
+{
+  "name": "dsh-simple-notes",
+  "version": "1.0.0",
+  "description": "可以随时记录自己的想法，可按日期与标签检索",
+  "type": "module",
+  "license": "MIT",
+  "author": "ximiluoer",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ximiluoer/dsh-simple-notes.git"
+  },
+  "homepage": "https://github.com/ximiluoer/dsh-simple-notes#readme",
+  "bugs": {
+    "url": "https://github.com/ximiluoer/dsh-simple-notes/issues"
+  },
+  "keywords": [
+    "dsh-plugin",
+    "dsh",
+    "deepseek-harness",
+    "notes",
+    "notebook",
+    "tags"
+  ],
+  "exports": {
+    ".": "./index.js",
+    "./client": "./client.js",
+    "./locale/*.json": "./locale/*.json",
+    "./icon": "./icon.svg"
+  },
+  "files": [
+    "index.js",
+    "client.js",
+    "cordis.patch.yml",
+    "locale/*.json",
+    "icon.svg"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "immediately": true,
+      "inject": [
+        "@deepseek-ai/dsh-client-ui-conversation"
+      ]
+    }
+  }
+}
