@@ -1912,10 +1912,27 @@ window.__ModuleLoader__.load({
         Math.min(point && point.y ? point.y + 12 : 24, Math.max(8, window.innerHeight - 340)),
       );
 
+      // A portal moves the DOM, not React's event tree: this sheet is a React
+      // child of the sidebar entry, which lives inside the sidebar's own panel
+      // button. Without stopping propagation here, any click inside the sheet
+      // bubbles up to that button and opens the notes panel.
+      const keep = (event) => {
+        event.stopPropagation();
+      };
+
       const body = h(
         React.Fragment,
         null,
-        h('div', { className: 'dn-qn-backdrop', key: 'backdrop', onMouseDown: onClose }),
+        h('div', {
+          className: 'dn-qn-backdrop',
+          key: 'backdrop',
+          onMouseDown: (event) => {
+            event.stopPropagation();
+            onClose();
+          },
+          onClick: keep,
+          onPointerDown: keep,
+        }),
         h(
           'div',
           {
@@ -1925,6 +1942,15 @@ window.__ModuleLoader__.load({
             'aria-label': tr('title'),
             'data-revision': String(revision),
             style: { left: left + 'px', top: top + 'px' },
+            onMouseDown: keep,
+            onClick: keep,
+            onPointerDown: keep,
+            onPointerUp: keep,
+            onDoubleClick: keep,
+            onContextMenu: (event) => {
+              event.preventDefault();
+              event.stopPropagation();
+            },
           },
           h(
             'div',
